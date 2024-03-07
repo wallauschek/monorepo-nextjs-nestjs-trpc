@@ -35,10 +35,11 @@ export class AuthService {
       throw Error('Failed to create user');
     }
     const hash = await argon.hash(dto.password);
-    const { perfis } = dto;
+    const { perfis, alunos } = dto;
 
     delete dto.password;
     delete dto.perfis;
+    delete dto.alunos;
 
     const user = await this.prisma.usuario
       .create({
@@ -65,6 +66,7 @@ export class AuthService {
       user.nome,
       user.usuario,
       perfis,
+      alunos,
     );
     await this.updateRtHash(user.id, tokens.refresh_token);
 
@@ -186,7 +188,8 @@ export class AuthService {
       user.id,
       user.nome,
       user.usuario,
-      dadosUsuario.tipo,
+      dadosUsuario.perfil,
+      dadosUsuario.alunos,
     );
     await this.updateRtHash(user.id, tokens.refresh_token);
 

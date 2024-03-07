@@ -9,6 +9,7 @@ const CreateAuthDtoSchema = z.object({
   nome: z.string(),
   codigo_recuperacao: z.string().optional(),
   perfis: z.array(z.any()).optional(),
+  alunos: z.array(z.any()).optional(),
 });
 
 export class CreateAuthDto {
@@ -40,6 +41,8 @@ export class CreateAuthDto {
 
   perfis?: perfisDTO[];
 
+  alunos?: any[];
+
   constructor(
     email: string,
     nome: string,
@@ -47,6 +50,7 @@ export class CreateAuthDto {
     password?: string,
     codigo_recuperacao?: string,
     perfis?: string[],
+    alunos?: any[],
   ) {
     const result = CreateAuthDtoSchema.parse({
       email,
@@ -55,6 +59,7 @@ export class CreateAuthDto {
       password,
       codigo_recuperacao,
       perfis,
+      alunos,
     });
 
     // Atribuição das propriedades validadas
@@ -64,5 +69,6 @@ export class CreateAuthDto {
     this.nome = result.nome;
     this.codigo_recuperacao = result.codigo_recuperacao;
     this.perfis = result.perfis;
+    this.alunos = result.alunos;
   }
 }

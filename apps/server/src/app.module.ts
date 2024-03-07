@@ -1,11 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
 import { TrpcModule } from '@server/trpc/trpc.module';
+import { TotvsModule } from './totvs/totvs.module';
+import { AuthModule } from './auth/auth.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [TrpcModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      // validate: (env) => envSchema.parse(env),
+      isGlobal: true,
+    }),
+    TrpcModule,
+    TotvsModule,
+    AuthModule,
+    PrismaModule,
+  ],
 })
 export class AppModule {}

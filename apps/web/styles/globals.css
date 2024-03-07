@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color-cel: #d6141a;
+  --primary-color-franco: #004a80;
+
+  --primary: #121215;
+  --secondary: #eaeaea;
+
+  --secondary-color-cel: #00558b;
+  --secondary-color-franco: #a71c20;
+}
+
+@layer base {
+  html[data-theme='cel'] {
+    --primary: var(--primary-color-cel);
+    --secondary: var(--secondary-color-cel);
+  }
+
+  html[data-theme='franco'] {
+    --primary: var(--primary-color-franco);
+    --secondary: var(--secondary-color-franco);
+  }
+}
+
+/* Estilo base do menu */
+.menu {
+  position: fixed;
+  top: 0;
+  left: -300px; /* Inicialmente, o menu está fora da tela à esquerda */
+  width: 200px; /* Largura do menu */
+  height: 100%;
+  transition: left 0.3s; /* Adiciona uma transição suave para a animação */
+}
+
+/* Estilo do botão Fechar */
+#close-menu {
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Estilo do menu quando aberto */
+.menu.open {
+  left: 0; /* Move o menu para a posição inicial */
+}
+
+/* Estilo do fundo desfocado */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Cor do fundo desfocado */
+  backdrop-filter: blur(5px); /* Adiciona o efeito de desfoque */
+  opacity: 0;
+  pointer-events: none; /* Impede interações com a camada de fundo */
+  transition: opacity 0.3s; /* Adiciona uma transição suave para a animação */
+}
+
+/* Estilo da camada de fundo quando o menu está aberto */
+.menu-overlay.open {
+  opacity: 1; /* Torna a camada de fundo visível */
+  pointer-events: auto; /* Permite interações com a camada de fundo */
+}
+
+.boletim tbody tr td:first-child, .boletim thead tr:first-child th:first-child {
+  position: sticky;
+  left: 0;
+  /* background: white; */
+  z-index: 10;
+  /* border: black 1px solid; */
+}
+
+.boletim thead, .boletim thead tr:first-child th:first-child{
+  position: sticky;
+  top: 0;
+  /* background: white; */
+  z-index: 10;
+}

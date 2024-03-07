@@ -41,8 +41,42 @@ export default observer(function BoletimBoard() {
         data-aos="fade-up"
         className="grid w-full"
       >
-    <div className="overflow-x-auto border-2 border-solid border-white max-h-screen">
-      <table className="boletim min-w-full divide-y divide-gray-200 border border-gray-100">
+    {!dados.status
+     ? ( 
+      <div className="text-center">
+        <h1 className="text-2xl font-bold">Aluno ou boletim não encontrado</h1>
+      </div>
+    ) : (
+    <div className="overflow-x-auto border-2 border-solid border-white ">
+      <div className="min-w-full mx-auto text-xs">
+        <div className="border-b border-gray-400">
+          <h1 className="text-lg font-bold text-center">BOLETIM ESCOLAR</h1>
+        </div>
+        <div className="grid grid-cols-2 gap-2 py-4">
+          <div>
+            <strong>NOME:</strong> {dados?.notas.notas[0].ALUNO}
+          </div>
+          <div>
+            <strong>TURMA:</strong> {dados?.notas.notas[0].CODTURMA}
+          </div>
+          <div>
+            <strong>MATRÍCULA:</strong> {dados?.notas.notas[0].RA}
+          </div>
+          <div>
+            <strong>SÉRIE:</strong> {dados?.notas.notas[0].SERIE}
+          </div>
+          <div>
+            <strong>Nº DA CHAMADA:</strong> {dados?.notas.notas[0].NUMERO_ALUNO}
+          </div>
+          <div>
+            <strong>TURNO:</strong> {dados?.notas.notas[0].TURNO}
+          </div>
+          <div>
+            <strong>ANO:</strong> {dados?.notas.notas[0].CODPERLET}
+          </div>
+        </div>
+      </div>
+      <table className={'boletim divide-y divide-gray-200 border border-gray-100 overflow-x-auto overflow-y-auto text-xs'}>
       <colgroup>
           <col span={2} />
           <col span={5} className="bg-blue-100"/>
@@ -53,7 +87,7 @@ export default observer(function BoletimBoard() {
         <thead className="bg-gray-50">
           <tr>
             <th className="p-2 border border-gray-100 min-w-[120px] bg-gray-50" rowSpan={2} >DISCIPLINA</th>
-            <th className="p-2 border border-gray-100 min-w-[120px]" rowSpan={2}>PROFESSOR</th>
+            <th className="p-2 border border-gray-100 min-w-[200px]" rowSpan={2}>PROFESSOR</th>
             <th className="p-2 border border-gray-100" colSpan={5}>Trimestre 1</th>
             <th className="p-2 border border-gray-100" colSpan={5}>Trimestre 2</th>
             <th className="p-2 border border-gray-100" colSpan={4}>Trimestre 3</th>
@@ -63,29 +97,29 @@ export default observer(function BoletimBoard() {
             <th className="p-2 border border-gray-100 min-w-[80px]" rowSpan={2}>status</th>
           </tr>
           <tr>
-            <th className="p-2 border border-gray-100 min-w-[60px]">T1</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">RP1</th>
-            <th className="p-2 border border-gray-100 min-w-[60px] font-bold ">MFT1</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">MT1T</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">FT1</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">T2</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">RP2</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">MFT2</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">MT2T</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">FT2</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">T3</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">MFT3</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">MT3T</th>
-            <th className="p-2 border border-gray-100 min-w-[60px]">FT3</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">N</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">RP</th>
+            <th className="p-2 border border-gray-100 min-w-[60px] font-bold ">MT</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">T</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">F</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">N</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">RP</th>
+            <th className="p-2 border border-gray-100 min-w-[60px] font-bold ">MT</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">T</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">F</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">N</th>
+            <th className="p-2 border border-gray-100 min-w-[60px] font-bold ">MT</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">T</th>
+            <th className="p-2 border border-gray-100 min-w-[60px]">F</th>
             <th className="p-2 border border-gray-100 min-w-[60px]">MN</th>
             <th className="p-2 border border-gray-100 min-w-[60px]">RF</th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-100">
-          {dados?.quantidade > 0 && dados.notas.map((item: any, idx: number) => (
+          {dados?.notas.quantidade > 0 && dados.notas.notas.map((item: any, idx: number) => (
             <tr key={idx} className={idx % 2 === 0 ? '' : 'bg-gray-50'}>
-              <td className={`p-2 text-center border border-gray-100 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>{item.DISCIPLINA || '-'}</td>
-              <td className="p-2 text-center border border-gray-100">{item.PROFESSOR || '-'}</td>
+              <td className={`p-2 border border-gray-100 ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>{item.DISCIPLINA || '-'}</td>
+              <td className="p-2 border border-gray-100">{item.PROFESSOR || '-'}</td>
               <td className="p-2 text-center border border-gray-100">{item.T1 || '-'}</td>
               <td className="p-2 text-center border border-gray-100">{item.RP1 || '-'}</td>
               <td className="p-2 text-center border border-gray-100 font-bold">{item.MFT1 || '-'}</td>
@@ -110,6 +144,7 @@ export default observer(function BoletimBoard() {
         </tbody>
       </table>
     </div>
+    )}
        </Section>
    </MainLayout>
   );

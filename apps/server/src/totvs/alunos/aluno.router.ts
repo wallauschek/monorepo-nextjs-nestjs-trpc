@@ -16,23 +16,31 @@ export function alunoRouter(
         }),
       )
       .query(async ({ input, ctx }) => {
-        //verificar se usuário existe e validade do token
-        if (
-          !ctx.user?.alunos.filter(
-            (aluno) =>
-              aluno.ra === input.ra &&
-              aluno.coligada === input.coligada &&
-              aluno.periodoLetivo === input.periodoLetivo,
-          )
-        ) {
+        const verificaAluno = ctx.user?.alunos.filter(
+          (aluno) =>
+            aluno.registroAcademicoBasico == input.ra &&
+            aluno.codColigada == input.coligada &&
+            aluno.periodoLetivo == input.periodoLetivo,
+        );
+
+        console.log('🚀 ~ .query ~ verificaAluno:', ctx);
+
+        if (verificaAluno?.length === 0) {
           //usuário não autorizado
-          throw new Error('Usuário não encontrado');
+          return {
+            status: false,
+            notas: [],
+          };
         }
-        return await alunoService.getNotasBoletim(
+        const notas = await alunoService.getNotasBoletim(
           input.coligada,
           input.periodoLetivo,
           input.ra,
         );
+        return {
+          status: true,
+          notas,
+        };
       }),
   });
 }

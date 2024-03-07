@@ -1,0 +1,7 @@
+POST http://201.148.210.189:8052/api/connect/token
+Content-Type: application/json
+
+{
+  "username": "08417154752",
+  "password": "123456",
+}

@@ -10,7 +10,7 @@ import { twMerge } from 'tailwind-merge';
 
 import Link from '@web/app/components/atoms/Link/Link';
 import Profile, { painelUser } from '@web/app/components/molecules/Profile/Profile';
-import SearchBar from '@web/app/components/molecules/SearchBar/SearchBar';
+// import SearchBar from '@web/app/components/molecules/SearchBar/SearchBar';
 import SignIn from '@web/app/components/molecules/SignIn/SignIn';
 import { Separator } from '@web/app/components/ui/separator';
 
@@ -63,19 +63,19 @@ const NavBar: React.FC<INavBar> = observer(({ className, showUserInfoPanel = fal
           className={`mx-auto ${school === 'franco' ? 'w-28' : 'w-20'} `}
         />
       </a>
-      <a
+      {/* <a
         href="/cursos"
         className="text-gray-400 duration-300 hover:text-primary hover:no-underline active:text-primary max-md:hidden"
       >
         Cursos
-      </a>
+      </a> */}
       {isAuthenticated ? (
         <Profile className="order-last max-md:hidden" />
       ) : (
         <SignIn className="order-last max-md:hidden" />
       )}
 
-      <SearchBar />
+      {/* <SearchBar /> */}
 
       {/* Camada de desfoque para o conteúdo fora do menu */}
       {isMenuOpen && (

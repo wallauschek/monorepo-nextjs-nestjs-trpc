@@ -11,9 +11,15 @@ export function authRouter(trpc: TrpcService, authService: AuthService) {
           password: z.string(),
         }),
       )
-      .query(({ input }) => {
+      .query(({ input, ctx }) => {
+        const { coligada } = ctx;
+
         const { username, password } = input;
-        const auth = authService.signInLocal({ usuario: username, password });
+        const auth = authService.signInLocal({
+          coligada,
+          usuario: username,
+          password,
+        });
         return auth;
       }),
 

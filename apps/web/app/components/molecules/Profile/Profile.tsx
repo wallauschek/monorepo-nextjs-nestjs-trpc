@@ -194,7 +194,7 @@ const Profile: React.FC<IProfile> = observer(({ className, ...props }): any => {
         {/* Mobile */}
         <Link
           href=""
-          className=" col-span-2 flex w-full items-center space-x-2 px-3 md:hidden     "
+          className=" col-span-2 flex w-full items-center space-x-2 px-3  md:hidden"
         >
           <span className="w-10 rounded-full bg-primary p-2 text-center text-white">{`${
             firstNameInitial || ''

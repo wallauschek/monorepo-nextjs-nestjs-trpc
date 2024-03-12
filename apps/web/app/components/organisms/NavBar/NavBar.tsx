@@ -42,27 +42,29 @@ const NavBar: React.FC<INavBar> = observer(({ className, showUserInfoPanel = fal
   const isAuthenticated = new Cookie().has('access_token');
 
   return (
-    <nav
-      {...props}
-      className={twMerge(
-        `grid grid-cols-[min-content_1fr_min-content] items-center gap-4 rounded-sm ${
-          showUserInfoPanel ? 'px-4' : 'p-4'
-        } pt-6 shadow-md   md:grid-cols-[150px_max-content_1fr_min-content_min-content]`,
-        className
-      )}
-    >
-      {/* Open menu mobile  button */}
-      <button onClick={() => setIsMenuOpen(setmenuMobile())} className="md:hidden">
-        <Menu className="mx-auto w-10 duration-300 hover:text-primary" />
-      </button>
+<nav
+  {...props}
+  className={twMerge(
+    `grid grid-cols-[auto_1fr_auto] items-center gap-4 p-4 pt-6 shadow-md`,
+    className
+  )}
+>
+  {/* Logo */}
+  <a href="/" className="justify-self-start">
+    <Image
+      alt="logo escola"
+      src={school === 'franco' ? logoFranco : logoCel}
+      className={`mx-auto ${school === 'franco' ? 'w-28' : 'w-20'} `}
+    />
+  </a>
 
-      <a href="/">
-        <Image
-          alt="logo escola"
-          src={school === 'franco' ? logoFranco : logoCel}
-          className={`mx-auto ${school === 'franco' ? 'w-28' : 'w-20'} `}
-        />
-      </a>
+  {/* Espaço reservado para o centro da barra de navegação (se necessário) */}
+  <div></div>
+
+  {/* Botão do menu para dispositivos móveis */}
+  <button onClick={() => setIsMenuOpen(setmenuMobile())} className="md:hidden justify-self-end">
+    <Menu className="mx-auto w-10 duration-300 hover:text-primary" />
+  </button>
       {/* <a
         href="/cursos"
         className="text-gray-400 duration-300 hover:text-primary hover:no-underline active:text-primary max-md:hidden"
@@ -81,7 +83,7 @@ const NavBar: React.FC<INavBar> = observer(({ className, showUserInfoPanel = fal
       {isMenuOpen && (
         <div
           onClick={() => setIsMenuOpen(setmenuMobile())}
-          className=" fixed left-0 top-0 z-20 h-screen w-full bg-black/50"
+          className=" fixed right-0 top-0 z-20 h-screen w-full bg-black/50"
         />
       )}
 

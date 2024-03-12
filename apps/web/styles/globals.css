@@ -86,17 +86,20 @@ a:hover {
   pointer-events: auto; /* Permite interações com a camada de fundo */
 }
 
-.boletim tbody tr td:first-child, .boletim thead tr:first-child th:first-child {
-  position: sticky;
-  left: 0;
-  /* background: white; */
-  z-index: 10;
-  /* border: black 1px solid; */
-}
-
-.boletim thead, .boletim thead tr:first-child th:first-child{
+.boletim thead {
   position: sticky;
   top: 0;
-  /* background: white; */
   z-index: 10;
+  /* background: white; */
+}
+
+.boletim tbody td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  /* background: white; */
+}
+
+.text-shadow {
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }

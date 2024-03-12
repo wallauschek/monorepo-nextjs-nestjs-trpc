@@ -87,11 +87,12 @@ export class AuthService {
       password: dto.password,
     });
 
-    // console.log('🚀 ~ AuthService ~ signInLocal ~ login:', login);
+    console.log('🚀 ~ AuthService ~ signInLocal ~ login:', login);
 
     if (!login.status) throw new ForbiddenException('Access Denied');
 
     const dadosUsuario = await this.usuarioTotvsService.ValidaUsuarioTotvs(
+      // dto.coligada,
       dto.usuario,
     );
 

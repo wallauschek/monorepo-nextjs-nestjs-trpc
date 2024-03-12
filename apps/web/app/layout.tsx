@@ -15,8 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${
       process.env.NEXT_PUBLIC_DOMAIN === headers().get('host')
-        ? 'Centro Cultural'
-        : 'Atividades Extras'
+        ? 'Colégio Franco'
+        : 'CEL Intercultural School'
     }`
   };
 }

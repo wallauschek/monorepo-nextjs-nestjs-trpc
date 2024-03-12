@@ -3,6 +3,7 @@ import { trpc } from "@web/app/trpc";
 import { decode } from "jsonwebtoken";
 
 class ChamadasBackEnd {
+
   async refreshToken({ refresh_token }: { refresh_token: string }) {
     if (refresh_token) {
       const decoded = decode(refresh_token);
@@ -78,14 +79,61 @@ class ChamadasBackEnd {
       });
   }
 
-  async buscaNotasBoletim() {
+  async buscaNotasBoletim(
+    coligada: number,
+    periodoLetivo: string,
+    ra: string
+  ) {
     const token = new Cookie().get("access_token") as string;
     if (token) {
       return trpc.buscarNotasBoletim
         .query({
-          coligada: 5,
-          periodoLetivo: "2023",
-          ra: "2018500128",
+          coligada,
+          periodoLetivo,
+          ra
+        })
+        .then((response: any) => {
+          return response;
+        })
+        .catch((err: any) => {
+          console.log(err);
+
+          return err;
+        });
+    }
+  }
+  async buscaFaltasCELBoletim(
+    periodoLetivo: string,
+    ra: string
+  ) {
+    const token = new Cookie().get("access_token") as string;
+    if (token) {
+      return trpc.buscarFaltasCELBoletim
+        .query({
+          periodoLetivo,
+          ra
+        })
+        .then((response: any) => {
+          return response;
+        })
+        .catch((err: any) => {
+          console.log(err);
+
+          return err;
+        });
+    }
+  }
+  
+  async buscaTrilhasCELBoletim(
+    periodoLetivo: string,
+    ra: string
+  ) {
+    const token = new Cookie().get("access_token") as string;
+    if (token) {
+      return trpc.buscarTrilhasCELBoletim
+        .query({
+          periodoLetivo,
+          ra
         })
         .then((response: any) => {
           return response;

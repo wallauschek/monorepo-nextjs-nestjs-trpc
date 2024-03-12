@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 import Footer from '@web/app/components/organisms/Footer/Footer';
 import NavBar from '@web/app/components/organisms/NavBar/NavBar';
+import Sidebar from '@web/app/components/organisms/SideBar/SideBar';
 
 interface MainLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
@@ -38,8 +39,14 @@ export const MainLayout = ({
   return (
     <div className={twMerge(' min-h-screen', className)} {...props}>
       <NavBar showUserInfoPanel={showUserInfoPanel} />
-      {children}
-      <Footer />
+      {/* <Sidebar /> */}
+      <div className="min-h-screen flex flex-col">
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 };
+

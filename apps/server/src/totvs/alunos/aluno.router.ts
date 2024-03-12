@@ -16,14 +16,12 @@ export function alunoRouter(
         }),
       )
       .query(async ({ input, ctx }) => {
-        const verificaAluno = ctx.user?.alunos.filter(
+        const verificaAluno = ctx.user?.alunos.find(
           (aluno) =>
             aluno.registroAcademicoBasico == input.ra &&
             aluno.codColigada == input.coligada &&
             aluno.periodoLetivo == input.periodoLetivo,
         );
-
-        console.log('🚀 ~ .query ~ verificaAluno:', ctx);
 
         if (verificaAluno?.length === 0) {
           //usuário não autorizado
@@ -35,11 +33,72 @@ export function alunoRouter(
         const notas = await alunoService.getNotasBoletim(
           input.coligada,
           input.periodoLetivo,
+          verificaAluno.codSerie || '',
           input.ra,
         );
         return {
           status: true,
           notas,
+        };
+      }),
+    buscarFaltasCELBoletim: trpc.protectedProcedure
+      .input(
+        z.object({
+          periodoLetivo: z.string(),
+          ra: z.string(),
+        }),
+      )
+      .query(async ({ input, ctx }) => {
+        const verificaAluno = ctx.user?.alunos.find(
+          (aluno) =>
+            aluno.registroAcademicoBasico == input.ra &&
+            aluno.periodoLetivo == input.periodoLetivo,
+        );
+
+        if (verificaAluno?.length === 0) {
+          //usuário não autorizado
+          return {
+            status: false,
+            faltas: [],
+          };
+        }
+        const faltas = await alunoService.getFaltasCELBoletim(
+          input.periodoLetivo,
+          input.ra,
+        );
+        return {
+          status: true,
+          faltas,
+        };
+      }),
+    buscarTrilhasCELBoletim: trpc.protectedProcedure
+      .input(
+        z.object({
+          periodoLetivo: z.string(),
+          ra: z.string(),
+        }),
+      )
+      .query(async ({ input, ctx }) => {
+        const verificaAluno = ctx.user?.alunos.find(
+          (aluno) =>
+            aluno.registroAcademicoBasico == input.ra &&
+            aluno.periodoLetivo == input.periodoLetivo,
+        );
+
+        if (verificaAluno?.length === 0) {
+          //usuário não autorizado
+          return {
+            status: false,
+            trilhas: [],
+          };
+        }
+        const trilhas = await alunoService.getTrilhasCELBoletim(
+          input.periodoLetivo,
+          input.ra,
+        );
+        return {
+          status: true,
+          trilhas,
         };
       }),
   });

@@ -4,7 +4,8 @@ import { Dispatch } from 'react';
 
 import Link from '@web/app/components/atoms/Link/Link';
 
-import coursesStore from '../../../stores/cursos';
+import appStore from '@web/stores/app';
+import SelectStudentsItem from '../SelectStudentsItem/SelectStudentsItem';
 
 export interface ISelectStudents {
   title?: string;
@@ -21,7 +22,7 @@ const SelectStudents: React.FC<ISelectStudents> = observer(
       students,
       setStudentSelected: setStudentSelectedStore,
       school
-    } = coursesStore;
+    } = appStore;
 
     if (!studentSelected) {
       if (students.length === 0) {
@@ -50,26 +51,14 @@ const SelectStudents: React.FC<ISelectStudents> = observer(
 
       return (
         <div className="fixed left-0 right-0 top-0 z-[999] flex h-full w-full items-center justify-center rounded-md bg-black/50 shadow-lg">
-          <div className="grid w-96 gap-3 bg-red-50 p-5">
-            <h2 className="text-center text-2xl font-bold text-gray-600 max-md:text-xl">
+          <div className="grid w-96 gap-3 p-5">
+            <h2 className="text-center text-2xl font-bold text-white max-md:text-xl text-shadow">
               Selecione um Aluno
             </h2>
             {loadingStudents === 'success' ? (
               students.map((student: any, index: number) => {
                 return (
-                  <span
-                    key={index}
-                    onClick={() => setStudentSelected(setStudentSelectedStore(student))}
-                    className="flex cursor-pointer items-center gap-2 p-3 text-gray-950 duration-300 hover:bg-gray-100 max-md:text-sm"
-                  >
-                    <span
-                      // onClick={() => setIsMenuOpen(setProfileDesktop())}
-                      className=" w-10 cursor-default rounded-full  bg-primary p-2 text-center text-white duration-300 hover:text-gray-100 "
-                    >
-                      {`${student.aluno.split(' ')[0][0]}`}
-                    </span>
-                    {student.aluno}
-                  </span>
+                  <SelectStudentsItem key={index} student={student} studentSelected={studentSelected} setStudentSelected={setStudentSelected} />
                 );
               })
             ) : (

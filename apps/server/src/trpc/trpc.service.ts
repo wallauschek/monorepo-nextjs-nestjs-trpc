@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
+
 export type JWTAuthUser = {
   sub: string;
   name: string;
@@ -54,13 +54,29 @@ export class TrpcService {
       opts.req as unknown as IAuthRequest,
     );
 
+    const origin = opts.req.headers.origin;
+
+    let coligada = 0;
+    if (
+      // origin === process.env.FRONT_END_FRANCO
+      origin === 'http://localhost:3000'
+    ) {
+      coligada = 5;
+    } else if (
+      // origin === process.env.FRONT_END_CEL
+      origin === 'http://localhost:3001'
+    ) {
+      coligada = 1;
+    }
+
     if (!token) {
-      return {};
+      return { coligada };
     }
 
     return {
       user:
         (await this.jwtService.verifyAsync<JWTAuthUser>(token)) ?? undefined,
+      coligada,
     };
   };
 

@@ -9,14 +9,9 @@ export async function createContext({
   // This is just an example of something you might want to do in your ctx fn
   async function getUserFromHeader() {
     if (req.headers.authorization) {
-      console.log(
-        '🚀 ~ getUserFromHeader ~ req.headers.authorization:',
-        req.headers.authorization,
-      );
+      console.log('🚀 ~ getUserFromHeader ~ req.headers:', req.headers);
 
-      const user = {
-        sub: '1234',
-      };
+      const user = {};
       // await decodeAndVerifyJwtToken(
       //   req.headers.authorization.split(' ')[1],
       // );

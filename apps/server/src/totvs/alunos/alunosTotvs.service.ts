@@ -73,6 +73,7 @@ export class AlunosTotvsService {
                 OR A.RA = @USUARIO 
             )
             and PL.EXIBIRPORTAL = 'S'
+            and s.descricao in ('ATIVO')
             AND C.NOME IN ('EDUCAÇÃO INFANTIL', 'ENSINO FUNDAMENTAL', 'ENSINO MÉDIO')
             AND (A2.CODTIPOALUNO != 4 OR A2.CODTIPOALUNO IS NULL)
           GROUP BY MPL.CODCOLIGADA, MPL.CODFILIAL, MPL.CODTURMA, P.NOME, P.DTNASCIMENTO, P.CODIGO, MPL.RA, A.RA, A2.RA, T2.CODTURNO, T2.NOME, HBF.IDHABILITACAOFILIAL, C.CODCURSO, HBF.CODTIPOCURSO, C.NOME, HBF.CODHABILITACAO, H.NOME, MPL.IDPERLET, S.DESCRICAO, PL.CODPERLET
@@ -87,10 +88,143 @@ export class AlunosTotvsService {
     }
   }
 
-  async getNotasBoletim(coligada: number, periodoLetivo: string, ra: string) {
+  async getNotasBoletim(
+    coligada: number,
+    periodoLetivo: string,
+    serie: string,
+    ra: string,
+  ) {
+    const consultaPorSerie = [
+      {
+        coligada: 5,
+        serie: '1A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAI',
+      },
+      {
+        coligada: 5,
+        serie: '2A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAI',
+      },
+      {
+        coligada: 5,
+        serie: '3A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAI',
+      },
+      {
+        coligada: 5,
+        serie: '4A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAI',
+      },
+      {
+        coligada: 5,
+        serie: '5A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAI',
+      },
+      {
+        coligada: 5,
+        serie: '6A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAF',
+      },
+      {
+        coligada: 5,
+        serie: '7A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAF',
+      },
+      {
+        coligada: 5,
+        serie: '8A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAF',
+      },
+      {
+        coligada: 5,
+        serie: '9A1',
+        sql: 'VW_PED_BOLETIM_FB_EFAF',
+      },
+      {
+        coligada: 5,
+        serie: '1S2',
+        sql: 'VW_PED_BOLETIM_FB_EFAF',
+      },
+      {
+        coligada: 5,
+        serie: '2S2',
+        sql: 'VW_PED_BOLETIM_FB_EFAF',
+      },
+      {
+        coligada: 5,
+        serie: '3S2',
+        sql: 'VW_PED_BOLETIM_FB_3S2',
+      },
+
+      {
+        coligada: 1,
+        serie: '1A1',
+        sql: 'VW_PED_BOLETIM_CEL_1A1',
+      },
+      {
+        coligada: 1,
+        serie: '2A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAI',
+      },
+      {
+        coligada: 1,
+        serie: '3A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAI',
+      },
+      {
+        coligada: 1,
+        serie: '4A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAI',
+      },
+      {
+        coligada: 1,
+        serie: '5A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAI',
+      },
+      {
+        coligada: 1,
+        serie: '6A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAF',
+      },
+      {
+        coligada: 1,
+        serie: '7A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAF',
+      },
+      {
+        coligada: 1,
+        serie: '8A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAF',
+      },
+      {
+        coligada: 1,
+        serie: '9A1',
+        sql: 'VW_PED_BOLETIM_CEL_EFAF',
+      },
+      {
+        coligada: 1,
+        serie: '1S2',
+        sql: 'VW_PED_BOLETIM_CEL_EM',
+      },
+      {
+        coligada: 1,
+        serie: '2S2',
+        sql: 'VW_PED_BOLETIM_CEL_EM',
+      },
+      {
+        coligada: 1,
+        serie: '3S2',
+        sql: 'VW_PED_BOLETIM_CEL_3S2',
+      },
+    ];
+
     try {
       const notas = await this.prisma.$queryRawUnsafe<any[]>(`
-      select distinct * from ${this.tableCorpore}.dbo.VW_PED_BOLETIM_FB_EFAI
+      select distinct * from ${this.tableCorpore}.dbo.${
+        consultaPorSerie.find(
+          (item) => item.serie === serie && item.coligada === coligada,
+        )?.sql
+      }
         WHERE 
         CODCOLIGADA = ${coligada}
         AND RA = '${ra}'
@@ -101,6 +235,42 @@ export class AlunosTotvsService {
       return {
         quantidade: notas.length,
         notas,
+      };
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getFaltasCELBoletim(periodoLetivo: string, ra: string) {
+    try {
+      const faltas = await this.prisma.$queryRawUnsafe<any[]>(`
+      select distinct * from ${this.tableCorpore}.dbo.VW_PED_FLATAS_CEL
+        WHERE 
+        RA = '${ra}'
+        AND CODPERLET = '${periodoLetivo}'
+      `);
+
+      return {
+        quantidade: faltas.length,
+        faltas,
+      };
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async getTrilhasCELBoletim(periodoLetivo: string, ra: string) {
+    try {
+      const trilhas = await this.prisma.$queryRawUnsafe<any[]>(`
+      select distinct * from ${this.tableCorpore}.dbo.VW_PED_CEL_TRILHA
+        WHERE 
+        RA = '${ra}'
+        AND CODPERLET = '${periodoLetivo}'
+      `);
+
+      return {
+        quantidade: trilhas.length,
+        trilhas,
       };
     } catch (error) {
       return error;

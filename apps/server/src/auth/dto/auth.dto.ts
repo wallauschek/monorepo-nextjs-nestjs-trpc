@@ -2,11 +2,18 @@ import { z } from 'zod';
 import { ApiProperty } from '@nestjs/swagger';
 
 const AuthDtoSchema = z.object({
+  coligada: z.number(),
   usuario: z.string(),
   password: z.string(),
 });
 
 export class AuthDto {
+  @ApiProperty({
+    example: 5,
+    description: 'Coligada do usuário',
+  })
+  coligada: number;
+
   @ApiProperty({
     example: '01101101111',
     description: 'Email do usuário',
@@ -19,8 +26,9 @@ export class AuthDto {
   })
   password: string;
 
-  constructor(usuario: string, password: string) {
+  constructor(coligada: number, usuario: string, password: string) {
     const result = AuthDtoSchema.parse({ usuario, password });
+    this.coligada = coligada;
     this.usuario = result.usuario;
     this.password = result.password;
   }
